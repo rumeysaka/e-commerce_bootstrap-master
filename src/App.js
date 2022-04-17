@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Products from "./components/Products/Product/Products";
 import Navigation from "./components/Products/Navigation/Navigation";
 import Cart from "./components/Products/Cart/Cart";
+import Checkout from "./components/Products/Checkout/Checkout";
 
 function App() {
 
@@ -76,7 +77,8 @@ function App() {
         <Navigation cart={cart} />
         <Routes>
           <Route path="/" element={<Products products={products} AddToCart={AddToCart} />}/>
-          <Route path="/cart" element={<Cart cart={cart} onEmptyCart={handleEmptyCart} onUpdateCartQty={handleUpdateCartQty } onRemoveFromCart={handleRemoveFromCart} />} />
+          <Route path="/cart" element={<Cart cart={cart} onEmptyCart={handleEmptyCart} onUpdateCartQty={handleUpdateCartQty} onRemoveFromCart={handleRemoveFromCart} />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </BrowserRouter>
     </>
