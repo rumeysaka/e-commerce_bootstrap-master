@@ -69,8 +69,8 @@ function App() {
     fetchCart();
   }, []);
 
-  console.log(products);
-  console.log(cart);
+  // console.log(products);
+  // console.log(cart);
   return (
     <>
       <BrowserRouter>
@@ -78,7 +78,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Products products={products} AddToCart={AddToCart} />}/>
           <Route path="/cart" element={<Cart cart={cart} onEmptyCart={handleEmptyCart} onUpdateCartQty={handleUpdateCartQty} onRemoveFromCart={handleRemoveFromCart} />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout" element={<Checkout cart={cart} />} />
         </Routes>
       </BrowserRouter>
     </>
