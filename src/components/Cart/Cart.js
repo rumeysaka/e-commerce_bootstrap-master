@@ -4,12 +4,12 @@ import CartItem from './CartItem'
 
 export default function Cart({
     cart,
-    onUpdateCartQty,
-    onRemoveFromCart,
-    onEmptyCart,
+    UpdateCartQty,
+    RemoveFromCart,
+    EmptyCart,
 }) {
     const handleEmptyCart = () => {
-        onEmptyCart()
+        EmptyCart()
     }
 
     function emptyCartMessage() {
@@ -22,7 +22,7 @@ export default function Cart({
             </>
         )
     }
-    const returnItemInCart = () => {
+    const returnCart = () => {
         return (
             <>
                 {cart.line_items.map((item) => (
@@ -64,9 +64,9 @@ export default function Cart({
                                 {cart.line_items.map((product) => (
                                     <CartItem
                                         key={product.id}
-                                        onUpdateCartQty={onUpdateCartQty}
-                                        onRemoveFromCart={onRemoveFromCart}
-                                        onEmptyCart={onEmptyCart}
+                                        onUpdateCartQty={UpdateCartQty}
+                                        onRemoveFromCart={RemoveFromCart}
+                                        onEmptyCart={EmptyCart}
                                         product={product}
                                     />
                                 ))}
@@ -76,13 +76,15 @@ export default function Cart({
                                     className="d-flex justify-content-center align-items-center"
                                     style={{ padding: '20px' }}>
                                     <Card.Text>
-                                        <h5>{cart.total_items} Items:</h5>
-                                        {returnItemInCart()}
+                                        <h5>Total Items: {cart.total_items} </h5>
+                                            {returnCart()}
+                                        <h5>Unique Items: {cart.total_unique_items} </h5>
+                                                                                        
                                         <h5>Subtotal:</h5>
-                                        {cart.subtotal.formatted_with_symbol}
+                                            {cart.subtotal.formatted_with_symbol}
                                     </Card.Text>
                                 </Card.Body>
-                                <Card.Link href="/checkout">
+                                <Card.Link href="/checkout" className='d-flex justify-content-center'>
                                     <Button variant="light">
                                         <h5>Checkout</h5>
                                     </Button>
