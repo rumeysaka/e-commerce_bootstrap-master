@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { Button, Card } from 'react-bootstrap'
 import CartItem from './CartItem'
+import { LoginContext } from '../../LoginContext'
 
 export default function Cart({
     cart,
@@ -8,6 +9,9 @@ export default function Cart({
     RemoveFromCart,
     EmptyCart,
 }) {
+    
+  const { user, setUser } = useContext(LoginContext)
+    
     const handleEmptyCart = () => {
         EmptyCart()
     }
@@ -18,6 +22,16 @@ export default function Cart({
                 <div>No item in your cart</div>
                 <a style={{ color: 'black' }} href="/">
                     Wanna add some?
+                </a>
+            </>
+        )
+    }
+    function noUserMessage() {
+        return (
+            <>
+                <div>Login to add to cart</div>
+                <a style={{ color: 'black' }} href="/sign">
+                    Login Here?
                 </a>
             </>
         )
@@ -56,9 +70,9 @@ export default function Cart({
                             Clear All
                         </Button>
                     </h2>
-                    {!cart.line_items.length ? (
-                        emptyCartMessage()
-                    ) : (
+
+                                {!user && (noUserMessage())}
+                    {cart.line_items.length && user &&(
                         <>
                             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                                 {cart.line_items.map((product) => (
@@ -70,6 +84,7 @@ export default function Cart({
                                         product={product}
                                     />
                                 ))}
+                                {!cart.line_items.length && (emptyCartMessage())}
                             </div>
                             <Card style={{ width: '18rem', float: 'right' }}>
                                 <Card.Body

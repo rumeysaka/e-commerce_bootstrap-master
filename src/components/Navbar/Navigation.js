@@ -1,10 +1,7 @@
 import React from 'react'
 import { Navbar, Nav, Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faCartShopping,
-  faBagShopping,
-} from '@fortawesome/free-solid-svg-icons'
+import { faCartShopping, faBagShopping } from '@fortawesome/free-solid-svg-icons'
 
 export default function Navigation({ cart, user, handleLogout }) {
   return (
@@ -23,16 +20,15 @@ export default function Navigation({ cart, user, handleLogout }) {
             {cart.total_items}
             <FontAwesomeIcon icon={faCartShopping} className='my-1 mx-1' />
           </Nav.Link>
-          {user ?                 <Nav.Link className="nav-link" href="/"
-                  onClick={handleLogout}
-                >
-                  Log out
-                </Nav.Link>:
-                <Nav.Link className="nav-link" href="/sign" >
-                  Sign In
-                </Nav.Link>}
-              
-
+          {user ? (
+            <Nav.Link className='nav-link' href='/' onClick={handleLogout}>
+              Log out
+            </Nav.Link>
+          ) : (
+            <Nav.Link className='nav-link' href='/sign'>
+              Sign In
+            </Nav.Link>
+          )}
         </Container>
       </Navbar>
     </>

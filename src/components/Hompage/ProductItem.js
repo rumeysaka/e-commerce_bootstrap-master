@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button, Card, Container } from 'react-bootstrap'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart } from '@fortawesome/free-regular-svg-icons'
+import { LoginContext } from '../../LoginContext'
 
 export default function ProductItem({ product, onAddToCart, handleFav }) {
-  
-  function onHandleFav(id){
+  const { user, setUser } = useContext(LoginContext)
+
+  function onHandleFav(id) {
     handleFav(id)
   }
   const handleAddToCart = () => {
@@ -13,9 +15,9 @@ export default function ProductItem({ product, onAddToCart, handleFav }) {
   }
   return (
     <>
-      <Container className="my-3">
+      <Container className='my-3'>
         <Card
-          className=""
+          className=''
           style={{
             width: '10rem',
             height: '20rem',
@@ -39,23 +41,20 @@ export default function ProductItem({ product, onAddToCart, handleFav }) {
               marginBottom: '0px',
             }}>
             <div>
-              <Card.Title style={{ fontSize: '18px' }}>
-                {product.name}
-              </Card.Title>
+              <Card.Title style={{ fontSize: '18px' }}>{product.name}</Card.Title>
               <Card.Text
                 dangerouslySetInnerHTML={{ __html: product.description }}
                 style={{ fontSize: '12px' }}></Card.Text>
             </div>
-            <Card.Text
-              style={{ fontSize: '15px', float: 'right', fontWeight: '500' }}>
+            <Card.Text style={{ fontSize: '15px', float: 'right', fontWeight: '500' }}>
               {product.price.formatted_with_symbol}
             </Card.Text>
-           
-            {!product.fav ? (
+
+            {!product.fav && user ? (
               <FontAwesomeIcon
                 icon={faHeart}
                 onClick={() => onHandleFav(product.id)}
-                className="m-1"
+                className='m-1'
               />
             ) : null}
           </Card.Body>

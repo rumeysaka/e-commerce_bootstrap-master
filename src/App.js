@@ -192,7 +192,7 @@ function App() {
 
         <Navigation cart={cart} user={user} handleLogout={handleLogout} />
         <div className='d-flex justify-content-space-between'>
-          <Sidebar />
+            <Sidebar user={user} />
           <Routes>
             <Route
               path='/'

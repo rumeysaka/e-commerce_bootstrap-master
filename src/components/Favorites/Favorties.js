@@ -8,7 +8,7 @@ import { Button, Card, Container } from 'react-bootstrap'
 export default function Favorties({favList, onHandleDelete, onDeleteAll, onHandleFav}) {
   return (
     <>
-    
+   
     <div className="my-4 container" style={{ display: "flex", flexWrap: "wrap", justifyContent:"center"}}>
       {favList.map((product) => (
         <div key={product.id}
@@ -71,14 +71,14 @@ export default function Favorties({favList, onHandleDelete, onDeleteAll, onHandl
 
 
         </div>
-      ))}
-        
+      ))} {favList.length && (
+        <Button style={{height:"28px", border:"0px"}} className="btn-sm bg-secondary" onClick={onDeleteAll}>
+          Delete all
+        </Button>
+      )}
+      
       </div>
     
-      {favList.length && (
-          <Button className="btn-sm bg-secondary" onClick={onDeleteAll}>
-            Delete all
-          </Button>
-        )}</>
+      </>
   )
 }
