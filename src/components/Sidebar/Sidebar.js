@@ -29,7 +29,14 @@ export default function Sidebar({ user }) {
             <Card.Link href='/cart' style={{ textDecoration: 'none', color: 'black' }}>
               Cart
             </Card.Link>
+          </Card.Text>{' '}
+          {user && (
+          <Card.Text>
+            <Card.Link href='/checkout' style={{ textDecoration: 'none', color: 'black' }}>
+              Checkout
+            </Card.Link>
           </Card.Text>
+            )}
           <Card.Text>
             <Card.Link href='/order-history' style={{ textDecoration: 'none', color: 'black' }}>
               Order History
@@ -39,10 +46,14 @@ export default function Sidebar({ user }) {
         <div className='justify-content-flex-end'>
           <Card.Footer>
             <Card.Text>
-              <Card.Link href="/sign" style={{ textDecoration: 'none', color: 'black' }}>Login</Card.Link>
+              <Card.Link href='/sign' style={{ textDecoration: 'none', color: 'black' }}>
+                Login
+              </Card.Link>
             </Card.Text>
             <Card.Text>
-              <Card.Link href="/sign" style={{ textDecoration: 'none', color: 'black' }}>Sign Up</Card.Link>
+              <Card.Link href='/sign' style={{ textDecoration: 'none', color: 'black' }}>
+                Sign Up
+              </Card.Link>
             </Card.Text>
           </Card.Footer>
         </div>

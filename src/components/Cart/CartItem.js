@@ -1,16 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faSquarePlus,
-  faSquareMinus,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons'
+import { faSquarePlus, faSquareMinus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Button, Card } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
-export default function CartItem({
-  product,
-  onUpdateCartQty,
-  onRemoveFromCart,
-}) {
+export default function CartItem({ cart,product, onUpdateCartQty, onRemoveFromCart }) {
   const handleUpdateCartQty = (lineItemId, quantity) => {
     onUpdateCartQty(lineItemId, quantity)
   }
@@ -46,13 +39,15 @@ export default function CartItem({
           marginBottom: '0px',
         }}>
         <div>
-          <Card.Title style={{ fontSize: '18px' }}>{product.name}</Card.Title>
-          <Card.Text
-            dangerouslySetInnerHTML={{ __html: product.description }}
-            style={{ fontSize: '12px' }}></Card.Text>
+          {' '}
+          <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${product.product_id}`}>
+            <Card.Title style={{ fontSize: '18px' }}>{product.name}</Card.Title>
+            <Card.Text
+              dangerouslySetInnerHTML={{ __html: product.description }}
+              style={{ fontSize: '12px' }}></Card.Text>
+          </Link>
         </div>
-        <Card.Text
-          style={{ fontSize: '15px', float: 'right', fontWeight: '500' }}>
+        <Card.Text style={{ fontSize: '15px', float: 'right', fontWeight: '500' }}>
           {product.price.formatted_with_symbol}
         </Card.Text>
       </Card.Body>

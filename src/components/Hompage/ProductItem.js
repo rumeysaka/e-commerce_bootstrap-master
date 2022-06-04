@@ -3,8 +3,10 @@ import { Button, Card, Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
 import { LoginContext } from '../../LoginContext'
+import Details from '../Details/Details'
+import { Link } from 'react-router-dom'
 
-export default function ProductItem({ product, onAddToCart, handleFav }) {
+export default function ProductItem({ product, onAddToCart, handleFav, products }) {
   const { user, setUser } = useContext(LoginContext)
 
   function onHandleFav(id) {
@@ -33,7 +35,8 @@ export default function ProductItem({ product, onAddToCart, handleFav }) {
               width: '120px',
               alignSelf: 'center',
             }}
-          />{' '}
+          />
+
           <Card.Body
             style={{
               alignItems: 'end',
@@ -41,10 +44,12 @@ export default function ProductItem({ product, onAddToCart, handleFav }) {
               marginBottom: '0px',
             }}>
             <div>
-              <Card.Title style={{ fontSize: '18px' }}>{product.name}</Card.Title>
-              <Card.Text
-                dangerouslySetInnerHTML={{ __html: product.description }}
-                style={{ fontSize: '12px' }}></Card.Text>
+              <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${product.id}`}>
+                <Card.Title style={{ fontSize: '18px' }}>{product.name}</Card.Title>
+                <Card.Text
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                  style={{ fontSize: '12px' }}></Card.Text>
+              </Link>
             </div>
             <Card.Text style={{ fontSize: '15px', float: 'right', fontWeight: '500' }}>
               {product.price.formatted_with_symbol}

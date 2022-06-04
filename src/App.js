@@ -11,6 +11,7 @@ import Sidebar from './components/Sidebar/Sidebar'
 import OrderHistory from './components/OrderHistory/OrderHistory'
 import Favorties from './components/Favorites/Favorties'
 import { LoginContext } from './LoginContext'
+import Details from './components/Details/Details'
 
 import Sign from './components/Login/Sign.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -110,7 +111,7 @@ function App() {
     fetchCart()
   }, [])
 
-  console.log(cart)
+  console.log("cart",cart)
 
 
 
@@ -221,6 +222,7 @@ function App() {
                     onHandleDelete={handleDelete}
                     onDeleteAll={handleDeleteAll}
                     onHandleFav={handleFav}
+                    onAddToCart={AddToCart}
                   />
                 }
               />
@@ -238,12 +240,13 @@ function App() {
             />
             <Route path='/order-history' element={<OrderHistory />} />
             <Route path="/sign" element={<Sign />} />
+              <Route exact path="/:id" element={<Details products={products} handleFav={handleFav } onAddToCart={AddToCart} />} />
 
           </Routes>
         </div>
         </LoginContext.Provider>
       </BrowserRouter>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

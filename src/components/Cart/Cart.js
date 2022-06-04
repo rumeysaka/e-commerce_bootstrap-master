@@ -28,13 +28,17 @@ export default function Cart({
     }
     function noUserMessage() {
         return (
-            <>
-                <div>Login to add to cart</div>
+            <div className='d-flex justify-content-center'>
+                <Card style={{ width: "400px", backgroundColor: "rgba(0,0,0,0)" }}>
+                <Card.Body>
+                <Card.Text>
+                <div className='d-flex justify-content-center'>Login to add to cart</div></Card.Text>
+                <div className='d-flex justify-content-center'>
                 <a style={{ color: 'black' }} href="/sign">
-                    Login Here?
-                </a>
-            </>
-        )
+                    Click to Login Here
+                </a></div></Card.Body>
+            </Card>
+            </div>)
     }
     const returnCart = () => {
         return (
@@ -77,6 +81,7 @@ export default function Cart({
                             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                                 {cart.line_items.map((product) => (
                                     <CartItem
+                                        cart={cart}
                                         key={product.id}
                                         onUpdateCartQty={UpdateCartQty}
                                         onRemoveFromCart={RemoveFromCart}

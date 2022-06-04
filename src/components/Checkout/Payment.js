@@ -22,22 +22,22 @@ export default function Payment({ cart, token, onCaptureCheckout, shippingData }
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({ type: "card", card: cardElement })
 
-    if (error) {
-      console.log(error)
-    } else {
-      const orderData = {
+    console.log(shippingData)
+    
+  
+      const orderData = [{
         line_items: token.live.line_items,
         customer: {
-          firstname: shippingData.firstname,
-          lastname: shippingData.lastname,
+          firstname: shippingData.name,
+          lastname: shippingData.surname,
           email: shippingData.email,
         },
         shipping: {
           name: 'Primary',
-          street: shippingData.address1,
+          street: shippingData.address,
           town_city: shippingData.city,
           county_state: shippingData.shippingSubdivision,
-          postal_zip_code: shippingData.zip,
+          postal_zip_code: shippingData.zipcode,
           country: shippingData.shippingCountry,
         },
         fulfillment: { shipping_method: shippingData.shippingOption },
@@ -46,11 +46,11 @@ export default function Payment({ cart, token, onCaptureCheckout, shippingData }
           stripe: {
             payment_method_id: paymentMethod.id
           }
-        }
-      }
+         }
+      }]
     console.log(orderData)
       onCaptureCheckout(token.id, orderData)
-    }
+   
     console.log(shippingData)
   }
   return (

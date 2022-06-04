@@ -5,7 +5,12 @@ import { commerce } from '../../lib/commerce'
 import { useEffect } from 'react'
 import { MenuItem, Select } from '@material-ui/core'
 
-export default function InitialForm({ token }) {
+export default function InitialForm({ token, increment, test }) {
+  const [name, setName] = useState('')
+  const [surname, setSurname] = useState('')
+  const [zipcode, setZipcode] = useState('')
+  const [address, setAddress] = useState('')
+  const [email, setEmail] = useState('')
   const [shippingCountries, setShippingCountries] = useState([])
   const [shippingCountry, setShippingCountry] = useState('')
   const [shippingSubdivisions, setShippingSubdivisions] = useState([])
@@ -16,7 +21,24 @@ export default function InitialForm({ token }) {
 
   const { Adform, handleSubmit, errors } = useForm()
 
-
+  const handleSub = (e) => {
+    e.preventDefault()
+    // hadi()
+    const newData = [
+      {
+        name: name,
+        surname: surname,
+        zipcode: zipcode,
+        address: address,
+        email: email,
+        shippingCountry: shippingCountry,
+        shippingSubdivision: shippingSubdivision,
+        shippingOption: shippingOption,
+      },
+    ]
+    console.log('newdata', newData)
+    test(newData)
+  }
   const fetchSubdivisions = async (countryCode) => {
     const { subdivisions } = await commerce.services.localeListSubdivisions(countryCode)
 
@@ -56,34 +78,42 @@ export default function InitialForm({ token }) {
     <div>
       <FormProvider>
         <Form
-          onSubmit={methods.handleSubmit((data) =>
-            test({ ...data, shippingCountry, shippingSubdivision, shippingOption })
-          )}
+          //  onSubmit={methods.handleSubmit((data) => test({ ...data, shippingCountry, shippingSubdivision, shippingOption }))}
+          onSubmit={handleSub}
           className='d-flex row'>
           <Form.Group className='col-6' controlId='formBasicEmail'>
             <div>Name</div>
-            <Form.Control style={{ height: '28px' }} className='mb-3' type='Name' ref={Adform} />
+            <Form.Control
+              value={name}
+              name='name'
+              onChange={(e) => setName(e.target.value)}
+              style={{ height: '28px' }}
+              className='mb-3'
+              type='Name'
+            />
             <div>Address</div>
             <Form.Control
-              name='address1'
+              value={address}
+              name='address'
+              onChange={(e) => setAddress(e.target.value)}
               style={{ height: '28px' }}
               className='mb-3'
               type='Address'
-              ref={Adform}
             />
             <div>Zip Code</div>
             <Form.Control
+              value={zipcode}
+              name={zipcode}
+              onChange={(e) => setZipcode(e.target.value)}
               style={{ height: '28px' }}
               className='mb-3'
               type='Zip Code'
-              ref={Adform}
             />
             <div>Shipment</div>
             <Form.Select
               style={{ height: '28px', padding: '3px', paddingTop: '0px' }}
               className='mb-3'
               fullWidth
-              ref={Adform}
               onChange={(e) => setShippingOption(e.target.value)}>
               {shippingOptions
                 .map((sO) => ({
@@ -99,15 +129,28 @@ export default function InitialForm({ token }) {
           </Form.Group>
           <Form.Group className='col-6' controlId='formBasicPassword'>
             <div>Surname</div>
-            <Form.Control style={{ height: '28px' }} className='mb-3' type='Surname' ref={Adform} />
+            <Form.Control
+              value={surname}
+              name='surname'
+              onChange={(e) => setSurname(e.target.value)}
+              style={{ height: '28px' }}
+              className='mb-3'
+              type='Surname'
+            />
             <div>Email</div>
-            <Form.Control style={{ height: '28px' }} className='mb-3' type='Email' ref={Adform} />
+            <Form.Control
+              value={email}
+              name='surname'
+              onChange={(e) => setEmail(e.target.value)}
+              style={{ height: '28px' }}
+              className='mb-3'
+              type='Email'
+            />
             <div>Country</div>
             <Form.Select
               style={{ height: '28px', padding: '3px', paddingTop: '0px' }}
               className='mb-3'
               fullWidth
-              ref={Adform}
               onChange={(e) => setShippingCountry(e.target.value)}>
               {Object.entries(shippingCountries)
                 .map(([code, name]) => ({ id: code, label: name }))
@@ -121,7 +164,6 @@ export default function InitialForm({ token }) {
             <Form.Select
               style={{ height: '28px', padding: '3px', paddingTop: '0px' }}
               value={shippingSubdivision}
-              ref={Adform}
               onChange={(e) => setShippingSubdivision(e.target.value)}>
               {Object.entries(shippingSubdivisions)
                 .map(([code, name]) => ({ id: code, label: name }))
@@ -133,13 +175,13 @@ export default function InitialForm({ token }) {
             </Form.Select>
             {errors && <p>invalid</p>}
           </Form.Group>{' '}
+          <Button
+            className='d-flex mt-4 justify-content-center btn-sm'
+            variant='secondary'
+            type='submit'>
+            next
+          </Button>
         </Form>
-        <Button
-          className='d-flex mt-4 justify-content-center btn-sm'
-          variant='secondary'
-          type='submit'>
-          Submit
-        </Button>
       </FormProvider>
     </div>
   )

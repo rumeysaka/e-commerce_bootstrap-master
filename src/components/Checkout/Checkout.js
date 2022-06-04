@@ -6,10 +6,10 @@ import Payment from './Payment'
 
 const steps = ['Shipping address', 'Payment details']
 
-export default function Checkout({ cart, onCaptureCheckout, error }) {
+export default function Checkout({ cart, onCaptureCheckout, error, orderInfo }) {
   const [activeStep, setActiveStep] = useState(0)
   const [checkoutToken, setCheckoutToken] = useState(null)
-  const [shippingData, setShippingData] = useState({})
+  const [shippingData, setShippingData] = useState([])
 
   const Confirmation = () => <div>confirmation</div>
 
@@ -23,10 +23,16 @@ export default function Checkout({ cart, onCaptureCheckout, error }) {
     console.log(checkoutToken)
   }, [cart])
 
+  const increment = () => {
+  }
 
   const test = (data) => {
     setShippingData(data);
-    console.log(data)
+    orderInfo(data)
+    console.log("shippingData", shippingData)
+    {
+      activeStep !== steps.length && setActiveStep(activeStep + 1)
+    }
   };
   
   return (
@@ -44,7 +50,7 @@ export default function Checkout({ cart, onCaptureCheckout, error }) {
           </Card.Text>
           <Card.Body>
             {activeStep === 0 && checkoutToken ? (
-              <InitialForm token={checkoutToken} setShippingData={setShippingData} test={test} />
+              <InitialForm token={checkoutToken} increment={increment} setShippingData={setShippingData} test={test} handle />
             ) : (
               <span></span>
             )}
