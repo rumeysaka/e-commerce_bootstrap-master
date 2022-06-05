@@ -22,7 +22,7 @@ export default function InitialForm({ token, increment, test }) {
 
   const { Adform, handleSubmit, errors } = useForm()
 
-  const { order, setOrder } = useContext(OrderContext)
+  const { order, setOrder, refreshCart } = useContext(OrderContext)
 
   const handleSub = (e) => {
     e.preventDefault()
@@ -44,6 +44,8 @@ export default function InitialForm({ token, increment, test }) {
     // setOrder(newData)
     setOrder([...order].concat(newData))
     console.log("order", order)
+    refreshCart()
+    
     
 // Object.keys(order).forEach(key => {
 //   // console.log(key); // 👉️ name, age

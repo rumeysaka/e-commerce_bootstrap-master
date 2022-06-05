@@ -13,64 +13,42 @@ export default function OrderHistory() {
 
   return (
     <>
-    <Card  style={{float:"right"}}>
-        <Card.Body>
-        {Object.values(order).map((item) => (
-          <div key={item.id}>
-            <Card.Body>
-              {}
-              <Card.Text>
-                <div>
-                  {' '}
+      <Card style={{ width: '35rem', marginLeft:"20%"}} className='my-4'>
+        <Card.Header>
+          <h3> Your Orders</h3>
+        </Card.Header>
+        <Card.Body className='p-4'>
+          {Object.values(order).map((item) => (
+            <div key={item.id}>
+              <Card></Card>
+              <Card.Body>
+                {}
+                <Card.Text>
                   <div>
-                    Alıcı adı : {item.name} {item.surname}
+                    {' '}
+                    <div>
+                      Alıcı adı : {item.name} {item.surname}
+                    </div>
+                    <div>Adresi : {item.address}</div>
+                    <div>
+                      <div className='m-4'>
+                        {Object.values(item.line_items).map((items) => (
+                          <div key={items.id}>
+                            {/* <Card.Img src={items.image.url} alt="Girl in a jacket" width="500" height="600"> */}
+                            <div>Ürün adıss : {items.name}</div>
+                            <div>Ürün adedi : {items.quantity}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <div>Adresi : {item.address}</div>
-                  <div>
-                    {/* {Object.entries(item)
-                .map(([line_items]) => ({ products: line_items }))
-                .map((item) => (
-                  <div key={item.id} >
-                    {item.products}
-                  </div>
-                ))}   */}
-                  </div>
-                </div>
-              </Card.Text>
-            </Card.Body>
-          </div>
-        ))}{' '}
+                </Card.Text>
+              </Card.Body>
+            </div>
+          ))}{' '}
         </Card.Body>
       </Card>
-    <div style={{float:"left"}}>
-      {' '}
-      <Card style={{ width: '20rem'}} className='my-4'>
-        <Card.Header>
-          <Card.Title> Your Orders</Card.Title>
-        </Card.Header>
-        <div className='mx-4'>
-          {Object.values(payment).map((item) => (
-            <div>
-              <div>
-                {Object.values(item.line_items).map((items) => (
-                  <div key={items.id}>
-                    {/* <Card.Img src={items.image.url} alt="Girl in a jacket" width="500" height="600"> */}
-                    <div>Ürün adı : {items.name}</div>
-                    <div>Ürün adedi : {items.quantity}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-        {/* 
-          {Object.values(line_Items).map((items) => (
-            <div>{items.name}</div>
-          ))}
-        */}
-      </Card>
-     
-      </div>
-      </>
+       
+    </>
   )
 }

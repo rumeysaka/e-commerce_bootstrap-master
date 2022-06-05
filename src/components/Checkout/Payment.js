@@ -59,7 +59,7 @@ export default function Payment({ cart, token, onCaptureCheckout, shippingData }
 
     console.log(payment)
     onCaptureCheckout(token.id, orderData)
-    refreshCart()
+    // refreshCart()
   }
   return (
     <div>
