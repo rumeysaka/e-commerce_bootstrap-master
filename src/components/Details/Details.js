@@ -1,37 +1,47 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { Card, Button, Form, Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
-
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
+import { LoginContext } from '../../LoginContext'
 
 import Products from './../Hompage/Products'
+import { CardActionArea } from '@material-ui/core'
 
 export default function Details({ products, handleFav, onAddToCart }) {
   const [temp, setTemp] = useState([])
   const [comment, setComment] = useState('')
+  const [person, setPerson] = useState('')
   const [comments, setComments] = useState([])
   const [last, setLast] = useState([])
   const [newObj, setNewObj] = useState([])
   const { id } = useParams()
+  const { user, setUser } = useContext(LoginContext)
 
   const handleComment = (event) => {
     event.preventDefault()
-    const newObj = [
-      {
+    setComments([...comments].concat(comment))
+
+    setNewObj(
+      [...newObj].concat({
         id: `${id}`,
-        comm: comments,
-      },
-    ]
+        name: person,
+        comm: comment,
+      })
+    )
+    setComment('')
+    setPerson('')
+    bilmemne()
+  }
+  function bilmemne() {
     {
       setLast(newObj.filter((item) => item.id == id))
     }
-    setComments([...comments].concat(comment))
-    setComment('')
-    console.log('newObj', newObj)
+    console.log('last', last)
   }
+
   function onHandleFav(id) {
     handleFav(id)
   }
@@ -41,31 +51,38 @@ export default function Details({ products, handleFav, onAddToCart }) {
 
   async function deneme() {
     setTemp(
-      await products.filter((item) => {
+      products.filter((item) => {
         return item.id == id
       })
     )
   }
 
-  useEffect(() => {
-    deneme()
-    console.log('newObj', newObj)
-  }, [])
-  console.log(temp)
-  console.log(comment)
+  const noUserMessage = () => {
+    return <div>You cant add to favorites</div>
+  }
 
   useEffect(() => {
-    const temp = localStorage.getItem('comments')
+    bilmemne()
+  }, [id, newObj])
+
+  useEffect(() => {
+    deneme()
+  }, [id])
+  console.log('newObj', newObj)
+
+  useEffect(() => {
+    const temp = localStorage.getItem('newObj')
     const commentsList = JSON.parse(temp)
     if (commentsList) {
-      setComments(commentsList)
+      setNewObj(commentsList)
     }
   }, [])
 
   useEffect(() => {
-    const temp = JSON.stringify(comments)
-    localStorage.setItem('comments', temp)
-  }, [comments])
+    const temp = JSON.stringify(newObj)
+    localStorage.setItem('newObj', temp)
+  }, [newObj])
+
   useEffect(() => {
     const temp = localStorage.getItem('comment')
     const loadComment = JSON.parse(temp)
@@ -78,14 +95,15 @@ export default function Details({ products, handleFav, onAddToCart }) {
     const temp = JSON.stringify(comment)
     localStorage.setItem('comment', temp)
   }, [comment])
+
   return (
     <div
       style={{
         marginTop: '3%',
         marginLeft: '16%',
       }}
-      onClick={deneme}>
-      
+      // onClick={deneme}
+    >
       {temp.length ? (
         Object.values(temp).map((temp) => (
           <div key={temp.id} style={{ marginBottom: '20px' }}>
@@ -107,12 +125,19 @@ export default function Details({ products, handleFav, onAddToCart }) {
                     <Card.Text dangerouslySetInnerHTML={{ __html: temp.description }}></Card.Text>
                     <Card.Text>{temp.price.formatted_with_symbol}</Card.Text>
 
-                    <Button variant='light' size='sm' onClick={() => handleAddToCart(temp.id)}>
+                    <Button
+                      variant='light'
+                      size='sm'
+                      onClick={() => {
+                        user && handleAddToCart(temp.id)
+                      }}>
                       Add to Cart
                     </Button>
                     <FontAwesomeIcon
                       icon={faHeart}
-                      onClick={() => onHandleFav(temp.id)}
+                      onClick={() => {
+                        user ? onHandleFav(temp.id) : noUserMessage()
+                      }}
                       className='mb-0 mx-3'
                     />
                   </Card.Body>
@@ -122,7 +147,9 @@ export default function Details({ products, handleFav, onAddToCart }) {
 
             <Form onSubmit={handleComment}>
               <Form.Group className='mt-4' controlId='exampleForm.ControlTextarea1'>
-                <Form.Label>Leave a comment</Form.Label>
+                <Form.Label>Name Surname</Form.Label>
+                <Form.Control value={person} onChange={(e)=> setPerson(e.target.value) } />
+                <Form.Label className='mt-1'>Leave a comment</Form.Label>
                 <Form.Control
                   style={{ width: '680px' }}
                   value={comment}
@@ -141,16 +168,26 @@ export default function Details({ products, handleFav, onAddToCart }) {
         <div>Loading</div>
       )}{' '}
       <div>
-        {comments && (
+        {newObj && (
           <div>
             {last.map((item) => (
-              <div>{item.comm}</div>
+              <Card
+                className='mt-1'
+                style={{ backgroundColor: 'rgb(247, 247, 247,.65)', border: '0px' }}>
+                  
+                <Card.Body><Card.Title className='opacity-100' style={{fontSize:"13px"}}>{item.name}</Card.Title>
+                  <Card.Text className='opacity-100 mx-3'>{item.comm}</Card.Text>
+                </Card.Body>
+              </Card>
             ))}
           </div>
         )}
       </div>
+      <div className='mt-3 d-flex justify-content-center'>
+        <h3>Related items</h3>
+      </div>
+      <br />
       <div
-        className='my-4'
         style={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -161,7 +198,7 @@ export default function Details({ products, handleFav, onAddToCart }) {
         }}>
         {products.map((product) => (
           <div key={product.id} style={{ marginBottom: '20px' }}>
-            <div className='my-3'>
+            <div>
               <Card
                 className=''
                 style={{
@@ -170,29 +207,22 @@ export default function Details({ products, handleFav, onAddToCart }) {
                   margin: '2px',
                   marginBottom: '0px',
                 }}>
-                {product.fav && (
-                  <FontAwesomeIcon
-                    icon={faXmark}
-                    style={{ float: 'right', color: 'grey', cursor: 'pointer' }}
-                    className='mx-1'
-                  />
-                )}
-                <Card.Img variant='top' src={product.image.url} />{' '}
-                <Card.Body
-                  style={{
-                    alignItems: 'end',
-                    paddingTop: '30px',
-                    marginBottom: '0px',
-                  }}>
-                  <div>
-                    <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${product.id}`}>
+                <Link style={{ textDecoration: 'none', color: 'black' }} to={`/${product.id}`}>
+                  <Card.Img variant='top' src={product.image.url} />{' '}
+                  <Card.Body
+                    style={{
+                      alignItems: 'end',
+                      paddingTop: '30px',
+                      marginBottom: '0px',
+                    }}>
+                    <div>
                       <Card.Title style={{ fontSize: '8px' }}>{product.name}</Card.Title>
-                    </Link>
-                  </div>
-                  <Card.Text style={{ fontSize: '7px', float: 'right', fontWeight: '500' }}>
-                    {product.price.formatted_with_symbol}
-                  </Card.Text>
-                </Card.Body>
+                    </div>
+                    <Card.Text style={{ fontSize: '7px', float: 'right', fontWeight: '500' }}>
+                      {product.price.formatted_with_symbol}
+                    </Card.Text>
+                  </Card.Body>
+                </Link>
               </Card>
             </div>
           </div>
