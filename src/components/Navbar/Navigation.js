@@ -19,7 +19,6 @@ export default function Navigation({ cart, user, handleLogout }) {
           </Nav.Link>
           {user ? (
             <>
-              
               <Nav.Link
                 className='nav-link'
                 style={{ marginLeft: '12px', paddingTop: '0px', color:"black" }}

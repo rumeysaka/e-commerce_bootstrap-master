@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { useForm, FormProvider } from 'react-hook-form'
 import { commerce } from '../../lib/commerce'
 import { useEffect } from 'react'
-import { MenuItem, Select } from '@material-ui/core'
+import { OrderContext } from '../../OrderContext'
 
 export default function InitialForm({ token, increment, test }) {
   const [name, setName] = useState('')
@@ -17,15 +17,19 @@ export default function InitialForm({ token, increment, test }) {
   const [shippingSubdivision, setShippingSubdivision] = useState('')
   const [shippingOptions, setShippingOptions] = useState([])
   const [shippingOption, setShippingOption] = useState('')
+  const [newData, setNewData] = useState([])
   const methods = useForm()
 
   const { Adform, handleSubmit, errors } = useForm()
 
+  const { order, setOrder } = useContext(OrderContext)
+
   const handleSub = (e) => {
     e.preventDefault()
     // hadi()
-    const newData = [
-      {
+    setNewData(
+      [{
+       line_items: token.live.line_items,
         name: name,
         surname: surname,
         zipcode: zipcode,
@@ -34,11 +38,22 @@ export default function InitialForm({ token, increment, test }) {
         shippingCountry: shippingCountry,
         shippingSubdivision: shippingSubdivision,
         shippingOption: shippingOption,
-      },
-    ]
-    console.log('newdata', newData)
-    test(newData)
+    }])
+  
+    console.log("newData", newData)
+    // setOrder(newData)
+    setOrder([...order].concat(newData))
+    console.log("order", order)
+    
+// Object.keys(order).forEach(key => {
+//   // console.log(key); // 👉️ name, age
+//   console.log(order[key]); // 👉️ 'Tom', 30
+// });
   }
+  function hadi() {
+    setOrder([...order].concat([newData]))
+  }
+
   const fetchSubdivisions = async (countryCode) => {
     const { subdivisions } = await commerce.services.localeListSubdivisions(countryCode)
 

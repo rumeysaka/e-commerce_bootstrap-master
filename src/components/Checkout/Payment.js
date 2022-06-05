@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Elements,
   CardElement,
@@ -7,12 +7,15 @@ import {
 } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { Button } from 'react-bootstrap'
-
-const stripePromise = loadStripe(
-  'pk_test_51L5YqPH597LM8jeH8tKOBZVwVKagUAUXbnv9JuFUV1iLpJ0pb6qGXnjY4Zasq9UmNmsH0CWHNACQtOuDSRKi4edk00JH2jzvwc'
-)
+import { OrderContext } from '../../OrderContext'
 
 export default function Payment({ cart, token, onCaptureCheckout, shippingData }) {
+  const { payment, setPayment, refreshCart } = useContext(OrderContext)
+  const { order } = useContext(OrderContext)
+
+  const stripePromise = loadStripe(
+    'pk_test_51L5YqPH597LM8jeH8tKOBZVwVKagUAUXbnv9JuFUV1iLpJ0pb6qGXnjY4Zasq9UmNmsH0CWHNACQtOuDSRKi4edk00JH2jzvwc'
+  )
 
   const handleSubmit = async (e, elements, stripe) => {
     e.preventDefault()
@@ -20,38 +23,43 @@ export default function Payment({ cart, token, onCaptureCheckout, shippingData }
 
     const cardElement = elements.getElement(CardElement)
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({ type: "card", card: cardElement })
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+    })
 
-    console.log(shippingData)
-    
-  
-      const orderData = [{
+    console.log('order', order)
+
+    const orderData = [
+      {
         line_items: token.live.line_items,
         customer: {
-          firstname: shippingData.name,
-          lastname: shippingData.surname,
-          email: shippingData.email,
+          firstname: order.name,
+          lastname: order.surname,
+          email: order.email,
         },
         shipping: {
           name: 'Primary',
-          street: shippingData.address,
-          town_city: shippingData.city,
-          county_state: shippingData.shippingSubdivision,
-          postal_zip_code: shippingData.zipcode,
-          country: shippingData.shippingCountry,
+          street: order[0].address,
+          town_city: order[0].city,
+          county_state: order[0].shippingSubdivision,
+          postal_zip_code: order[0].zipcode,
+          country: order[0].shippingCountry,
         },
-        fulfillment: { shipping_method: shippingData.shippingOption },
+        fulfillment: { shipping_method: order[0].shippingOption },
         payment: {
-          gateway: "stripe",
+          gateway: 'stripe',
           stripe: {
-            payment_method_id: paymentMethod.id
-          }
-         }
-      }]
-    console.log(orderData)
-      onCaptureCheckout(token.id, orderData)
-   
-    console.log(shippingData)
+            payment_method_id: paymentMethod.id,
+          },
+        },
+      },
+    ]
+    setPayment([...payment].concat(orderData))
+
+    console.log(payment)
+    onCaptureCheckout(token.id, orderData)
+    refreshCart()
   }
   return (
     <div>

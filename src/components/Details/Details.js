@@ -147,16 +147,27 @@ export default function Details({ products, handleFav, onAddToCart }) {
 
             <Form onSubmit={handleComment}>
               <Form.Group className='mt-4' controlId='exampleForm.ControlTextarea1'>
-                <Form.Label>Name Surname</Form.Label>
-                <Form.Control value={person} onChange={(e)=> setPerson(e.target.value) } />
-                <Form.Label className='mt-1'>Leave a comment</Form.Label>
-                <Form.Control
-                  style={{ width: '680px' }}
+                <Form.Label style={{fontSize:"13px"}}>Name Surname</Form.Label>
+                <Form.Control style={{height:"22px" }} value={person} onChange={(e)=> setPerson(e.target.value) } />
+                <Form.Label style={{fontSize:"13px"}} className='mt-1'>Leave a comment</Form.Label>
+                {/* (style={{pointerEvents: "none" }}) */}
+                
+                {!user ?(<Form.Control
+                  disabled
+                  style={{ width: '680px'}}
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   as='textarea'
                   rows={3}
+                />):
+                <Form.Control
+                style={{ width: '680px'}}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                as='textarea'
+                rows={3}
                 />
+              }
               </Form.Group>
               <Button variant='outline-secondary' className='my-2' type='submit'>
                 Submit

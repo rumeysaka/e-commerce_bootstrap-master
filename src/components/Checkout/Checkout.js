@@ -26,14 +26,14 @@ export default function Checkout({ cart, onCaptureCheckout, error, orderInfo }) 
   const increment = () => {
   }
 
-  const test = (data) => {
-    setShippingData(data);
-    orderInfo(data)
-    console.log("shippingData", shippingData)
-    {
-      activeStep !== steps.length && setActiveStep(activeStep + 1)
-    }
-  };
+  // const test = (data) => {
+  //   setShippingData(data);
+  //   orderInfo(data)
+  //   console.log("shippingData", shippingData)
+  //   {
+  //     activeStep !== steps.length && setActiveStep(activeStep + 1)
+  //   }
+  // };
   
   return (
     <>
@@ -50,7 +50,9 @@ export default function Checkout({ cart, onCaptureCheckout, error, orderInfo }) 
           </Card.Text>
           <Card.Body>
             {activeStep === 0 && checkoutToken ? (
-              <InitialForm token={checkoutToken} increment={increment} setShippingData={setShippingData} test={test} handle />
+              <InitialForm token={checkoutToken} increment={increment} setShippingData={setShippingData}
+                // test={test}
+                handle />
             ) : (
               <span></span>
             )}

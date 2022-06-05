@@ -34,14 +34,15 @@ export default function Sidebar({ user }) {
           <Card.Text>
             <Card.Link href='/checkout' style={{ textDecoration: 'none', color: 'black' }}>
               Checkout
-            </Card.Link>
-          </Card.Text>
-            )}
-          <Card.Text>
+              </Card.Link>
+              <Card.Text>
+
+              </Card.Text>
             <Card.Link href='/order-history' style={{ textDecoration: 'none', color: 'black' }}>
               Order History
             </Card.Link>
           </Card.Text>
+          )}
         </Card.Body>{' '}
         <div className='justify-content-flex-end'>
           <Card.Footer>
